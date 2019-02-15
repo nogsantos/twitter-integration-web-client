@@ -10,12 +10,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Typography from '@material-ui/core/Typography';
+
+import { AppContext } from '../../providers/app-context';
 
 const styles = theme => ({
 	toolbar: {
 		display: 'flex',
 		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'space-between',
 		padding: '0 8px',
 		...theme.mixins.toolbar
 	},
@@ -34,22 +37,35 @@ class Menu extends Component {
 	render() {
 		const { classes, theme } = this.props;
 		return (
-			<Fragment>
-				<div className={classes.toolbar}>
-					<IconButton onClick={this.menuAction}>
-						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-					</IconButton>
-				</div>
-				<Divider />
-				<List>
-					{['Send email', 'Drafts'].map((text, index) => (
-						<ListItem button key={text}>
-							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-							<ListItemText primary={text} />
-						</ListItem>
-					))}
-				</List>
-			</Fragment>
+			<AppContext.Consumer>
+				{({ handleDrawerClose }) => (
+					<Fragment>
+						<div className={classes.toolbar}>
+							<Typography variant="subtitle1" gutterBottom>
+								Fabricio Nogueira
+							</Typography>
+							<IconButton onClick={this.menuAction}>
+								{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+							</IconButton>
+						</div>
+						<Divider />
+						<List>
+							<ListItem button key="Send me an email">
+								<ListItemIcon>
+									<MailIcon />
+								</ListItemIcon>
+								<ListItemText primary="Send me an email" />
+							</ListItem>
+							<ListItem button key="Portfólio" component="a" href="https://fabricionogueira.me">
+								<ListItemIcon>
+									<InboxIcon />
+								</ListItemIcon>
+								<ListItemText primary="Portfólio" />
+							</ListItem>
+						</List>
+					</Fragment>
+				)}
+			</AppContext.Consumer>
 		);
 	}
 }
