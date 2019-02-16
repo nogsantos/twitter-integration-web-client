@@ -11,13 +11,13 @@ const styles = theme => ({
 		flexWrap: 'wrap'
 	},
 	margin: {
-		margin: theme.spacing.unit
+		marginBottom: 8
 	},
 	textField: {
 		flexBasis: '100%'
 	},
 	form: {
-		width: '98%'
+		width: '100%'
 	}
 });
 

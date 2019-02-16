@@ -66,11 +66,11 @@ class Menu extends Component {
 						</div>
 						<Divider />
 						<List>
-							<ListItem button key="Send me an email" onClick={this.handleClickOpen}>
+							<ListItem button key="Enviar mensagem" onClick={this.handleClickOpen}>
 								<ListItemIcon>
 									<MailIcon />
 								</ListItemIcon>
-								<ListItemText primary="Send me an email" />
+								<ListItemText primary="Envie uma mensagem" />
 							</ListItem>
 							<ListItem button key="Portfólio" component="a" href="https://fabricionogueira.me">
 								<ListItemIcon>

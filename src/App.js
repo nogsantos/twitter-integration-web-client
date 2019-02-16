@@ -5,12 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import purple from '@material-ui/core/colors/purple';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 import { AppContext } from './providers/app-context';
-import { Bar, Menu, HashTags, AppInput } from './components/index';
+import { Bar, Menu, HashTags, AppInput, UserCard } from './components/index';
 
 const theme = createMuiTheme({
 	palette: {
@@ -58,11 +58,19 @@ const styles = theme => ({
 		}
 	},
 	content: {
-		marginTop: 75
+		marginTop: 75,
+		width: '100%'
 	},
 	paper: {
 		padding: theme.spacing.unit * 2,
 		color: theme.palette.text.secondary
+	},
+	rightSide: {
+		borderLeft: '1px solid #e0e0e0'
+	},
+	title: {
+		borderBottom: '1px solid #e0e0e0',
+		marginBottom: '1rem'
 	}
 });
 class App extends Component {
@@ -110,38 +118,48 @@ class App extends Component {
 							<Menu {...{ handleDrawerClose }} />
 						</Drawer>
 						<main className={classes.content}>
-							<Grid container spacing={24}>
+							<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={24}>
 								<Grid item sm={6} xs={12}>
-									<AppInput id="btn-cad-hashtag" label="Busque a hashtag" />
-									<HashTags />
+									<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={8}>
+										<Grid item xs={12}>
+											<Typography variant="h4" className={classes.title}>
+												Cadastrar HashTags
+											</Typography>
+										</Grid>
+										<Grid item xs={12}>
+											<AppInput id="btn-cad-hashtag" label="Buscar e Cadastrar HashTag" />
+										</Grid>
+										<Grid item xs={12}>
+											<HashTags />
+										</Grid>
+									</Grid>
 								</Grid>
-								<Grid item sm={6} xs={12}>
-									<Paper className={classes.paper}>
-										Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae qui perferendis voluptas. A ratione
-										ad ullam qui architecto facilis culpa nostrum. Cumque optio inventore soluta iure recusandae.
-										Consequuntur, aut dolores. Est veniam, illo vitae a temporibus saepe ullam! Maxime maiores totam
-										iste, rem odio eaque corporis illo. Mollitia, est in! Ullam nesciunt rerum dolore cumque, ipsam
-										corporis minima hic voluptate. Quam voluptatem unde repellendus sapiente, consequatur doloremque
-										ipsa ex rerum officia suscipit quod sunt maiores vel veritatis earum libero! Eius laudantium
-										reiciendis exercitationem eligendi, mollitia eveniet quia inventore expedita. Labore? Quisquam
-										repellendus omnis tempora nemo, rerum temporibus. Nesciunt excepturi saepe odio impedit fuga placeat
-										tempora soluta facere corporis odit accusantium sint, voluptatem pariatur inventore laudantium sit.
-										Cum recusandae eos temporibus? Odit ratione, laudantium architecto esse tenetur maiores fugit
-										cupiditate commodi, eos omnis similique facilis? Molestiae eaque doloremque id quibusdam pariatur
-										similique voluptas veniam, tempore culpa vero, velit placeat est alias? Totam at voluptatibus fugiat
-										perspiciatis quia repellat, nemo ab, minus unde ratione id recusandae veritatis? Beatae ea quis
-										dolorum amet earum nam, fugiat necessitatibus iure labore quasi possimus nisi in. Vel, totam! Error
-										eos voluptate pariatur quia unde quae dolorem suscipit consequuntur cum necessitatibus, a maiores
-										deleniti temporibus saepe porro ab reprehenderit eligendi eius, accusantium enim sequi deserunt
-										ullam iusto? Aliquam corrupti culpa, totam facilis voluptatem blanditiis dignissimos laboriosam
-										repellat voluptas dolores, ad cumque, quod pariatur. Earum voluptatibus facilis, cumque animi qui
-										aliquam deserunt voluptas impedit id, molestias sit iusto! Molestiae voluptatem sequi quasi
-										corrupti. Consequatur dolores laudantium rem asperiores qui? Mollitia asperiores aspernatur eveniet
-										ratione hic beatae quod vero officiis nihil! Atque velit distinctio voluptatum, repellendus quo id
-										quisquam? Veritatis, atque ipsa! Aspernatur obcaecati velit ipsam neque autem ut, quod, molestiae
-										aut nam ratione repellendus iusto cumque? Sed neque recusandae vel autem commodi quas eum ipsum?
-										Error, itaque voluptatibus?
-									</Paper>
+								<Grid item sm={6} xs={12} className={classes.rightSide}>
+									<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={8}>
+										<Grid item xs={12}>
+											<Typography variant="h4" className={classes.title}>
+												Buscar Tweets
+											</Typography>
+										</Grid>
+										<Grid item xs={12}>
+											<AppInput id="btn-tweets-filter" label="Filtrar tweets por HashTag" />
+										</Grid>
+										{[0, 1].map(data => {
+											return (
+												<Grid key={data} item sm={12}>
+													<UserCard
+														name="Philip Gipson"
+														screenName="childgolden"
+														text="RT @LastLifeSeries: #BloodBorn badasses 😈🔮 #LastLife #LLSE2 #slaylor #webseries #pumasquad #witches https://t.co/dnWUMISHI"
+														createdAt="2019-02-14T04:35:58.000+0000"
+														location="Dayton, Ohio"
+														retweetCount={10}
+														biggerProfileImageURLHttps="https://pbs.twimg.com/profile_images/1064782299236048901/PHO3M3OY_bigger.jpg"
+													/>
+												</Grid>
+											);
+										})}
+									</Grid>
 								</Grid>
 							</Grid>
 						</main>
