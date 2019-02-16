@@ -3,56 +3,69 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'center',
 		flexWrap: 'wrap',
-		padding: theme.spacing.unit / 2
+		padding: theme.spacing.unit / 2,
+		minHeight: 50
 	},
 	chip: {
 		margin: theme.spacing.unit / 2
+	},
+	empty: {
+		textAlign: 'center',
+		padding: 15,
+		fontStyle: 'italic'
 	}
 });
 
 class HashTags extends Component {
-	state = {
-		chipData: [
-			{ key: 0, label: '#Angular' },
-			{ key: 1, label: '#jQuery' },
-			{ key: 2, label: '#Polymer' },
-			{ key: 3, label: '#React' },
-			{ key: 4, label: '#Vue.js' }
-		]
-	};
+	constructor(props) {
+		super(props);
 
-	handleDelete = data => () => {
+		this.state = {
+			data: []
+		};
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.hashTags !== prevProps.hashTags) {
+			this.setState({ data: this.props.hashTags });
+		}
+	}
+
+	handleDelete = toRemove => () => {
 		this.setState(state => {
-			const chipData = [...state.chipData];
-			const chipToDelete = chipData.indexOf(data);
-			chipData.splice(chipToDelete, 1);
-			return { chipData };
+			const data = [...state.data];
+			const chipToDelete = data.indexOf(toRemove);
+			data.splice(chipToDelete, 1);
+			return { data };
 		});
 	};
 
 	render() {
 		const { classes } = this.props;
-
+		const data = this.state.data;
 		return (
 			<Paper className={classes.root}>
-				{this.state.chipData.map(data => {
-					let icon = null;
-					return (
+				{data.length > 0 ? (
+					data.map(hashTag => (
 						<Chip
-							key={data.key}
-							icon={icon}
-							label={data.label}
-							onDelete={this.handleDelete(data)}
+							key={hashTag.id}
+							label={`#${hashTag.text}`}
+							onDelete={this.handleDelete(hashTag)}
 							className={classes.chip}
 						/>
-					);
-				})}
+					))
+				) : (
+					<Typography variant="body1" gutterBottom className={classes.empty}>
+						Nenhuma HashTag cadastrada até o momento
+					</Typography>
+				)}
 			</Paper>
 		);
 	}

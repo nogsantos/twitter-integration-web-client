@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import purple from '@material-ui/core/colors/purple';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import 'typeface-roboto';
+
+import axios from 'axios';
 
 import { AppContext } from './providers/app-context';
 import { Bar, Menu, HashTags, AppInput, UserCard } from './components/index';
@@ -74,8 +77,27 @@ const styles = theme => ({
 	}
 });
 class App extends Component {
-	state = {
-		open: false
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			open: false,
+			hashTags: null
+		};
+	}
+
+	componentDidMount() {
+		this.getValues();
+	}
+
+	getValues = () => {
+		axios.all([axios.get('http://localhost:8081/hashtag/')]).then(
+			axios.spread(hashTags => {
+				this.setState({
+					hashTags: hashTags.data
+				});
+			})
+		);
 	};
 
 	handleDrawerOpen = () => {
@@ -119,7 +141,7 @@ class App extends Component {
 						</Drawer>
 						<main className={classes.content}>
 							<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={24}>
-								<Grid item sm={6} xs={12}>
+								<Grid item sm={6} xs={12} className={classes.leftSide}>
 									<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={8}>
 										<Grid item xs={12}>
 											<Typography variant="h4" className={classes.title}>
@@ -130,7 +152,7 @@ class App extends Component {
 											<AppInput id="btn-cad-hashtag" label="Buscar e Cadastrar HashTag" />
 										</Grid>
 										<Grid item xs={12}>
-											<HashTags />
+											<HashTags hashTags={this.state.hashTags} />
 										</Grid>
 									</Grid>
 								</Grid>
