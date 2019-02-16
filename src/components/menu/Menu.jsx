@@ -13,7 +13,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import Typography from '@material-ui/core/Typography';
 
 import { AppContext } from '../../providers/app-context';
-
+import AppDialog from '../dialog/';
+const emails = ['nogsantos@gmail.com'];
 const styles = theme => ({
 	toolbar: {
 		display: 'flex',
@@ -29,6 +30,21 @@ const styles = theme => ({
 });
 
 class Menu extends Component {
+	state = {
+		open: false,
+		selectedValue: emails[1]
+	};
+
+	handleClickOpen = () => {
+		this.setState({
+			open: true
+		});
+	};
+
+	handleClose = value => {
+		this.setState({ selectedValue: value, open: false });
+	};
+
 	menuAction = () => {
 		const { handleDrawerClose } = this.props;
 		handleDrawerClose();
@@ -50,7 +66,7 @@ class Menu extends Component {
 						</div>
 						<Divider />
 						<List>
-							<ListItem button key="Send me an email">
+							<ListItem button key="Send me an email" onClick={this.handleClickOpen}>
 								<ListItemIcon>
 									<MailIcon />
 								</ListItemIcon>
@@ -63,6 +79,7 @@ class Menu extends Component {
 								<ListItemText primary="Portfólio" />
 							</ListItem>
 						</List>
+						<AppDialog selectedValue={this.state.selectedValue} open={this.state.open} onClose={this.handleClose} />
 					</Fragment>
 				)}
 			</AppContext.Consumer>

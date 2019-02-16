@@ -10,7 +10,7 @@ import purple from '@material-ui/core/colors/purple';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import { AppContext } from './providers/app-context';
-import { Bar, Menu } from './components/index';
+import { Bar, Menu, HashTags, AppInput } from './components/index';
 
 const theme = createMuiTheme({
 	palette: {
@@ -57,8 +57,10 @@ const styles = theme => ({
 			width: theme.spacing.unit * 9 + 1
 		}
 	},
+	content: {
+		marginTop: 75
+	},
 	paper: {
-		marginTop: 75,
 		padding: theme.spacing.unit * 2,
 		color: theme.palette.text.secondary
 	}
@@ -109,7 +111,11 @@ class App extends Component {
 						</Drawer>
 						<main className={classes.content}>
 							<Grid container spacing={24}>
-								<Grid item xs={12}>
+								<Grid item sm={6} xs={12}>
+									<AppInput id="btn-cad-hashtag" label="Busque a hashtag" />
+									<HashTags />
+								</Grid>
+								<Grid item sm={6} xs={12}>
 									<Paper className={classes.paper}>
 										Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae qui perferendis voluptas. A ratione
 										ad ullam qui architecto facilis culpa nostrum. Cumque optio inventore soluta iure recusandae.
