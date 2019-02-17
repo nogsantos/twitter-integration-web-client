@@ -10,7 +10,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import 'typeface-roboto';
 
 import { AppContext } from './providers/app-context';
-import { Bar, Menu } from './components/index';
+import { Bar, Menu, AppSnackBar } from './components/index';
 import { HashTag, Tweet } from './modules/index';
 
 const theme = createMuiTheme({
@@ -129,6 +129,7 @@ class App extends Component {
 							</Grid>
 						</main>
 					</div>
+					<AppSnackBar />
 				</MuiThemeProvider>
 			</AppContext.Provider>
 		);

@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Snackbar from '@material-ui/core/Snackbar';
 
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 import { AppChips, AppInput } from '../../components/index';
 
@@ -75,13 +75,11 @@ class HashTag extends Component {
 		axios
 			.delete(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { data: { id: toRemove.id } })
 			.then(response => {
-				console.log('response');
 				this.deleteFromList(toRemove);
-				this.message();
+				this.publishAMessage(`HashTag: #${toRemove.text} Removida com sucesso.`);
 			})
 			.catch(err => {
-				console.log('err');
-				this.message();
+				this.publishAMessage('Erro ao tentar deletar HashTag.');
 			});
 	};
 
@@ -106,10 +104,6 @@ class HashTag extends Component {
 		);
 	};
 
-	message = () => {
-		this.setState({ showMessage: true });
-	};
-
 	hashtagChange = event => {
 		this.setState({ hashtag: event.target.value });
 	};
@@ -121,23 +115,24 @@ class HashTag extends Component {
 			.then(response => {
 				let currentList = this.state.hashTagList;
 				currentList.unshift(response.data);
+				this.publishAMessage(`HashTag: #${this.state.hashtag} Criada com sucesso.`);
 				this.setState({
-					hashTagList: currentList
-				});
-				this.setState({
+					hashTagList: currentList,
 					hashtag: ''
 				});
-				this.message();
 			})
 			.catch(err => {
-				console.log(err);
-				this.message();
+				this.publishAMessage('Erro ao criar HashTag, O campo não pode ser vazio.');
 			});
 	};
 
+	publishAMessage(messageToPublis) {
+		PubSub.publish('update-message', { show: true, message: messageToPublis, buttonLabel: 'ok' });
+	}
+
 	render() {
 		const { classes } = this.props;
-		const { hashTagList, loading, showMessage, hashtag } = this.state;
+		const { hashTagList, loading, hashtag } = this.state;
 		return (
 			<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={8}>
 				<Grid item xs={12}>
@@ -165,18 +160,6 @@ class HashTag extends Component {
 						)}
 					</Paper>
 				</Grid>
-				<Snackbar
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'left'
-					}}
-					open={showMessage}
-					autoHideDuration={1000}
-					ContentProps={{
-						'aria-describedby': 'message-id'
-					}}
-					message={<span id="message-id">Note archived</span>}
-				/>
 			</Grid>
 		);
 	}
