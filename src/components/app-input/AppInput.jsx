@@ -15,45 +15,25 @@ const styles = theme => ({
 	},
 	textField: {
 		flexBasis: '100%'
-	},
-	form: {
-		width: '100%'
 	}
 });
 
 class AppInput extends Component {
-	state = {
-		hashtag: ''
-	};
-
-	handleChange = prop => event => {
-		this.setState({ [prop]: event.target.value });
-	};
-
-	handleSubmit = event => {
-		alert('A name was submitted: ' + this.state.hashtag);
-		event.preventDefault();
-	};
-
 	render() {
 		const { classes } = this.props;
-
 		return (
 			<div className={classes.root}>
-				<form noValidate autoComplete="off" className={classes.form}  onSubmit={this.handleSubmit}>
-					<TextField
-						className={classNames(classes.margin, classes.textField)}
-						id={this.props.id}
-						variant="outlined"
-						fullWidth
-						label={this.props.label}
-						value={this.state.hashtag}
-						onChange={this.handleChange('hashtag')}
-						InputProps={{
-							startAdornment: <InputAdornment position="start">#</InputAdornment>
-						}}
-					/>
-				</form>
+				<TextField
+					className={classNames(classes.margin, classes.textField)}
+					id={this.props.id}
+					variant="outlined"
+					fullWidth
+					label={this.props.label}
+					onChange={this.props.onChange}
+					InputProps={{
+						startAdornment: <InputAdornment position="start">#</InputAdornment>
+					}}
+				/>
 			</div>
 		);
 	}
@@ -62,7 +42,8 @@ class AppInput extends Component {
 AppInput.propTypes = {
 	classes: PropTypes.object.isRequired,
 	id: PropTypes.string.isRequired,
-	label: PropTypes.string.isRequired
+	label: PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(AppInput);
