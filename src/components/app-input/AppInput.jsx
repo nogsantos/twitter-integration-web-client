@@ -29,6 +29,7 @@ class AppInput extends Component {
 					variant="outlined"
 					fullWidth
 					label={this.props.label}
+					value={this.props.value}
 					onChange={this.props.onChange}
 					InputProps={{
 						startAdornment: <InputAdornment position="start">#</InputAdornment>
@@ -43,6 +44,7 @@ AppInput.propTypes = {
 	classes: PropTypes.object.isRequired,
 	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
+	value: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired
 };
 

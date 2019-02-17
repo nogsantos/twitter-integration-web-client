@@ -6,14 +6,15 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import axios from 'axios';
-import PubSub from 'pubsub-js';
 
 import { AppChips, AppInput } from '../../components/index';
+import { SuccessHandler, ErrorHandler } from '../message-handlers/index';
 
 const styles = theme => ({
 	root: {
 		display: 'flex',
 		justifyContent: 'center',
+		alignItems: 'center',
 		flexWrap: 'wrap',
 		padding: theme.spacing.unit / 2,
 		minHeight: 50,
@@ -62,12 +63,12 @@ class HashTag extends Component {
 					loading: false
 				});
 			})
-			.catch(err => {
-				this.message();
+			.catch(error => {
 				this.setState({
 					hashTagList: [],
 					loading: false
 				});
+				new ErrorHandler().catcher(error);
 			});
 	};
 
@@ -76,10 +77,10 @@ class HashTag extends Component {
 			.delete(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { data: { id: toRemove.id } })
 			.then(response => {
 				this.deleteFromList(toRemove);
-				this.publishAMessage(`HashTag: #${toRemove.text} Removida com sucesso.`);
+				new SuccessHandler().catcher(`HashTag: #${toRemove.text} Removida com sucesso.`);
 			})
-			.catch(err => {
-				this.publishAMessage('Erro ao tentar deletar HashTag.');
+			.catch(error => {
+				new ErrorHandler().catcher(error, 'Erro ao tentar deletar HashTag.');
 			});
 	};
 
@@ -92,18 +93,6 @@ class HashTag extends Component {
 		});
 	};
 
-	renderChild = (list, classes) => {
-		return list.length > 0 ? (
-			list.map(hashTag => {
-				return <AppChips key={hashTag.id} id={hashTag.id} text={hashTag.text} onDelete={this.handleDelete(hashTag)} />;
-			})
-		) : (
-			<Typography variant="body1" gutterBottom className={classes.empty}>
-				Nenhuma HashTag cadastrada até o momento
-			</Typography>
-		);
-	};
-
 	hashtagChange = event => {
 		this.setState({ hashtag: event.target.value });
 	};
@@ -113,22 +102,18 @@ class HashTag extends Component {
 		axios
 			.post(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { text: this.state.hashtag })
 			.then(response => {
+				new SuccessHandler().catcher(`HashTag: #${this.state.hashtag} Criada com sucesso.`);
 				let currentList = this.state.hashTagList;
 				currentList.unshift(response.data);
-				this.publishAMessage(`HashTag: #${this.state.hashtag} Criada com sucesso.`);
 				this.setState({
 					hashTagList: currentList,
 					hashtag: ''
 				});
 			})
-			.catch(err => {
-				this.publishAMessage('Erro ao criar HashTag, O campo não pode ser vazio.');
+			.catch(error => {
+				new ErrorHandler().catcher(error, 'Erro ao criar HashTag, O campo não pode ser vazio.');
 			});
 	};
-
-	publishAMessage(messageToPublis) {
-		PubSub.publish('update-message', { show: true, message: messageToPublis, buttonLabel: 'ok' });
-	}
 
 	render() {
 		const { classes } = this.props;
@@ -155,8 +140,21 @@ class HashTag extends Component {
 								size={24}
 								thickness={4}
 							/>
+						) : hashTagList.length > 0 ? (
+							hashTagList.map(hashTag => {
+								return (
+									<AppChips
+										key={hashTag.id}
+										id={hashTag.id}
+										text={hashTag.text}
+										onDelete={this.handleDelete(hashTag)}
+									/>
+								);
+							})
 						) : (
-							this.renderChild(hashTagList, classes)
+							<Typography variant="body1" gutterBottom className={classes.empty}>
+								Nenhuma HashTag cadastrada
+							</Typography>
 						)}
 					</Paper>
 				</Grid>
