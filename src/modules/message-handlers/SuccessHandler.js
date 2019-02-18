@@ -12,6 +12,14 @@ class SuccessHandler {
 		if (this.message) {
 			this.pubMessage(this.message);
 		}
+		return this;
+	}
+
+	/**
+	 * Publish a message to listner to load new data
+	 */
+	publishToLoad() {
+		PubSub.publish('load-new-data', { load: true });
 	}
 
 	pubMessage(messageToPublis) {

@@ -99,7 +99,8 @@ class HashTag extends Component {
 		axios
 			.post(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { text: this.state.hashtag })
 			.then(response => {
-				new SuccessHandler(`HashTag: #${this.state.hashtag} Criada com sucesso.`).dispatcher();
+				new SuccessHandler(`HashTag: #${this.state.hashtag} Criada com sucesso.`).dispatcher().publishToLoad();
+
 				let currentList = this.state.hashTagList;
 				currentList.unshift(response.data);
 				this.setState({

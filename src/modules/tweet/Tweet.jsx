@@ -6,6 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 
 import axios from 'axios';
+import PubSub from 'pubsub-js';
 
 import { TweetCard, AppInput } from '../../components/index';
 import { SuccessHandler, ErrorHandler } from '../message-handlers/index';
@@ -44,6 +45,12 @@ class Tweet extends Component {
 
 	componentDidMount() {
 		this.getValues();
+
+		PubSub.subscribe('load-new-data', (topic, action) => {
+			if (action.load) {
+				this.getValues();
+			}
+		});
 	}
 
 	getValues = () => {
@@ -104,7 +111,13 @@ class Tweet extends Component {
 				</Grid>
 				<Grid item xs={12}>
 					<form noValidate autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
-						<AppInput id="btn-tweets-filter" label="Buscar por HashTag" value={hashtag} onChange={this.hashtagChange} />
+						<AppInput
+							id="btn-tweets-filter"
+							label="Buscar por HashTag"
+							value={hashtag}
+							onBlur={this.handleSubmit}
+							onChange={this.hashtagChange}
+						/>
 					</form>
 				</Grid>
 				{loading ? (
