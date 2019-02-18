@@ -4,8 +4,14 @@ import PubSub from 'pubsub-js';
  * Publish a message with success information
  */
 class SuccessHandler {
-	catcher(message) {
-		this.pubMessage(message);
+	constructor(message) {
+		this.message = message;
+	}
+
+	dispatcher() {
+		if (this.message) {
+			this.pubMessage(this.message);
+		}
 	}
 
 	pubMessage(messageToPublis) {

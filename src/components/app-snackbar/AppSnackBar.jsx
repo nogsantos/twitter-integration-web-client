@@ -80,8 +80,8 @@ class AppSnackBar extends Component {
 		return (
 			<Snackbar
 				anchorOrigin={{
-					vertical: 'top',
-					horizontal: 'center'
+					vertical: 'bottom',
+					horizontal: 'left'
 				}}
 				open={open}
 				autoHideDuration={6000}

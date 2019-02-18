@@ -57,7 +57,7 @@ class Tweet extends Component {
 			})
 			.catch(error => {
 				this.setState({ loading: false });
-				new ErrorHandler().catcher(error);
+				new ErrorHandler(error).catcher();
 			});
 	};
 

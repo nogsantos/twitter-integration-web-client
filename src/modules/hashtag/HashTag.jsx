@@ -65,7 +65,7 @@ class HashTag extends Component {
 			})
 			.catch(error => {
 				this.setState({ loading: false });
-				new ErrorHandler().catcher(error);
+				new ErrorHandler(error).catcher();
 			});
 	};
 
@@ -74,10 +74,10 @@ class HashTag extends Component {
 			.delete(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { data: { id: toRemove.id } })
 			.then(response => {
 				this.deleteFromList(toRemove);
-				new SuccessHandler().catcher(`HashTag: #${toRemove.text} Removida com sucesso.`);
+				new SuccessHandler(`HashTag: #${toRemove.text} Removida com sucesso.`).dispatcher();
 			})
 			.catch(error => {
-				new ErrorHandler().catcher(error, 'Erro ao tentar deletar HashTag.');
+				new ErrorHandler(error).catcher();
 			});
 	};
 
@@ -99,7 +99,7 @@ class HashTag extends Component {
 		axios
 			.post(`${process.env.REACT_APP_API_ADDRESS}/hashtag/`, { text: this.state.hashtag })
 			.then(response => {
-				new SuccessHandler().catcher(`HashTag: #${this.state.hashtag} Criada com sucesso.`);
+				new SuccessHandler(`HashTag: #${this.state.hashtag} Criada com sucesso.`).dispatcher();
 				let currentList = this.state.hashTagList;
 				currentList.unshift(response.data);
 				this.setState({
@@ -108,7 +108,7 @@ class HashTag extends Component {
 				});
 			})
 			.catch(error => {
-				new ErrorHandler().catcher(error, 'Erro ao criar HashTag, O campo não pode ser vazio.');
+				new ErrorHandler(error).catcher();
 			});
 	};
 

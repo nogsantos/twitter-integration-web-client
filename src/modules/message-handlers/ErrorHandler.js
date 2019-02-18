@@ -4,23 +4,30 @@ import PubSub from 'pubsub-js';
  * Publish a message with defined error
  */
 class ErrorHandler {
-	catcher(error, message) {
-		if (error.response) {
-			switch (error.response.status) {
+	constructor(error) {
+		this.error = error;
+	}
+
+	catcher() {
+		if (this.error.response) {
+			switch (this.error.response.data.status) {
 				case 400:
-					this.pubMessage(message || '');
+					this.pubMessage(this.error.response.data.message);
+					break;
+				case 404:
+					this.pubMessage('Recurso não localizado');
 					break;
 				default:
-					this.pubMessage('Erro desconhecido até o momento');
+					this.pubMessage('Erro desconhecido, até o momento');
 					break;
 			}
-		} else if (error.request) {
+		} else if (this.error.request) {
 			this.pubMessage('Erro de conexão com o servidor.');
 		}
 	}
 
 	pubMessage(messageToPublis) {
-		PubSub.publish('update-message', { show: true, message: messageToPublis, buttonLabel: 'ok' });
+		PubSub.publish('update-message', { show: true, message: messageToPublis, buttonLabel: 'ERRO' });
 	}
 }
 
