@@ -36,7 +36,7 @@ class Tweet extends Component {
 		super(props);
 
 		this.state = {
-			loading: true,
+			loading: false,
 			hashtag: '',
 			tweetsList: []
 		};
@@ -47,6 +47,7 @@ class Tweet extends Component {
 	}
 
 	getValues = () => {
+		this.setState({ loading: true });
 		axios
 			.get(`${process.env.REACT_APP_API_ADDRESS}/twitter-local/`)
 			.then(tweets => {
@@ -67,7 +68,29 @@ class Tweet extends Component {
 
 	handleSubmit = event => {
 		event.preventDefault();
+		if (this.state.hashtag !== '') {
+			this.queryTweetsByHashTag();
+		} else {
+			this.getValues();
+		}
 	};
+
+	queryTweetsByHashTag() {
+		this.setState({ loading: true });
+		axios
+			.get(`${process.env.REACT_APP_API_ADDRESS}/twitter-local/search/${this.state.hashtag}`)
+			.then(response => {
+				new SuccessHandler(`Resultados para a HashTag: #${this.state.hashtag}.`).dispatcher();
+				this.setState({
+					tweetsList: [...response.data],
+					loading: false
+				});
+			})
+			.catch(error => {
+				this.setState({ loading: false });
+				new ErrorHandler(error).catcher();
+			});
+	}
 
 	render() {
 		const { classes } = this.props;
