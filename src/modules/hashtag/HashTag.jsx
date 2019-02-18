@@ -30,7 +30,7 @@ const styles = theme => ({
 		borderBottom: '1px solid #e0e0e0',
 		marginBottom: '1rem'
 	},
-	blueLoader: {
+	loader: {
 		color: '#6798e5',
 		animationDuration: '550ms',
 		position: 'relative',
@@ -64,10 +64,7 @@ class HashTag extends Component {
 				});
 			})
 			.catch(error => {
-				this.setState({
-					hashTagList: [],
-					loading: false
-				});
+				this.setState({ loading: false });
 				new ErrorHandler().catcher(error);
 			});
 	};
@@ -122,12 +119,12 @@ class HashTag extends Component {
 			<Grid container direction="row" justify="space-between" alignItems="flex-start" spacing={8}>
 				<Grid item xs={12}>
 					<Typography variant="h4" className={classes.title}>
-						Cadastrar HashTags
+						HashTags
 					</Typography>
 				</Grid>
 				<Grid item xs={12}>
 					<form noValidate autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
-						<AppInput id="btn-cad-hashtag" label="Cadastrar HashTag" value={hashtag} onChange={this.hashtagChange} />
+						<AppInput id="btn-cad-hashtag" label="Cadastrar" value={hashtag} onChange={this.hashtagChange} />
 					</form>
 				</Grid>
 				<Grid item xs={12}>
@@ -136,7 +133,7 @@ class HashTag extends Component {
 							<CircularProgress
 								variant="indeterminate"
 								disableShrink
-								className={classes.blueLoader}
+								className={classes.loader}
 								size={24}
 								thickness={4}
 							/>

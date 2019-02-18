@@ -47,14 +47,18 @@ const styles = theme => ({
 	}
 });
 
-class UserCard extends Component {
+class TweetCard extends Component {
 	formatDate = date => {
 		let formatedDate = new Date(Date.parse(date));
 		let d = d => (d < 10 ? `0${d}` : d);
 		return `${d(formatedDate.getDate())}/${d(formatedDate.getMonth() + 1)}/${formatedDate.getFullYear()} às ${d(
-			formatedDate.getUTCHours()
+			formatedDate.getHours()
 		)}h${formatedDate.getMinutes()}m`;
 	};
+
+	createMarkup(text) {
+		return { __html: text.replace(/(#[a-z0-9][a-zçÀ-ÿ0-9\-_]*)/gi, '<b>$1</b> ') };
+	}
 
 	render() {
 		const { classes } = this.props;
@@ -90,9 +94,7 @@ class UserCard extends Component {
 							</Grid>
 						</Grid>
 						<Grid item xs={12}>
-							<Typography variant="body1" gutterBottom>
-								{this.props.text}
-							</Typography>
+							<Typography variant="body1" gutterBottom dangerouslySetInnerHTML={this.createMarkup(this.props.text)} />
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="caption" gutterBottom>
@@ -106,7 +108,7 @@ class UserCard extends Component {
 	}
 }
 
-UserCard.propTypes = {
+TweetCard.propTypes = {
 	classes: PropTypes.object.isRequired,
 	theme: PropTypes.object.isRequired,
 	name: PropTypes.string.isRequired,
@@ -118,4 +120,4 @@ UserCard.propTypes = {
 	text: PropTypes.string.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(UserCard);
+export default withStyles(styles, { withTheme: true })(TweetCard);
