@@ -78,36 +78,34 @@ class AppSnackBar extends Component {
 		const { classes } = this.props;
 		const { open, message, buttonLabel } = this.state;
 		return (
-			<div>
-				<Snackbar
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center'
-					}}
-					open={open}
-					autoHideDuration={6000}
-					onClose={this.handleClose}
-					onExited={this.handleExited}
-					ContentProps={{
-						'aria-describedby': 'message-id'
-					}}
-					message={<span id="message-id">{message}</span>}
-					action={[
-						<Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
-							{buttonLabel.toUpperCase()}
-						</Button>,
-						<IconButton
-							key="close"
-							aria-label="Close"
-							color="inherit"
-							className={classes.close}
-							onClick={this.handleClose}
-						>
-							<CloseIcon />
-						</IconButton>
-					]}
-				/>
-			</div>
+			<Snackbar
+				anchorOrigin={{
+					vertical: 'top',
+					horizontal: 'center'
+				}}
+				open={open}
+				autoHideDuration={6000}
+				onClose={this.handleClose}
+				onExited={this.handleExited}
+				ContentProps={{
+					'aria-describedby': 'message-id'
+				}}
+				message={<span id="message-id">{message}</span>}
+				action={[
+					<Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
+						{buttonLabel.toUpperCase()}
+					</Button>,
+					<IconButton
+						key="close"
+						aria-label="Close"
+						color="inherit"
+						className={classes.close}
+						onClick={this.handleClose}
+					>
+						<CloseIcon />
+					</IconButton>
+				]}
+			/>
 		);
 	}
 }

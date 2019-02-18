@@ -36,24 +36,22 @@ class AppDialog extends Component {
 		return (
 			<Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
 				<DialogTitle id="simple-dialog-title">Entre em contato</DialogTitle>
-				<div>
-					<List>
-						{emails.map(email => (
-							<ListItem button onClick={() => this.handleListItemClick(email)} key={email}>
-								<ListItemAvatar>
-									<Avatar
-										alt="Fabricio Nogueira"
-										src="https://avatars1.githubusercontent.com/u/570926?s=460&v=4"
-										className={classes.avatar}
-									>
-										<PersonIcon />
-									</Avatar>
-								</ListItemAvatar>
-								<ListItemText primary={email} />
-							</ListItem>
-						))}
-					</List>
-				</div>
+				<List>
+					{emails.map(email => (
+						<ListItem button onClick={() => this.handleListItemClick(email)} key={email}>
+							<ListItemAvatar>
+								<Avatar
+									alt="Fabricio Nogueira"
+									src="https://avatars1.githubusercontent.com/u/570926?s=460&v=4"
+									className={classes.avatar}
+								>
+									<PersonIcon />
+								</Avatar>
+							</ListItemAvatar>
+							<ListItemText primary={email} />
+						</ListItem>
+					))}
+				</List>
 			</Dialog>
 		);
 	}
